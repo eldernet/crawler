@@ -68,6 +68,8 @@ class Crawler
 
     protected string $defaultScheme = 'http';
 
+    public ?LinkRejector $linkRejector = null;
+
     protected static array $defaultClientOptions = [
         RequestOptions::COOKIES => true,
         RequestOptions::CONNECT_TIMEOUT => 10,
@@ -291,6 +293,13 @@ class Crawler
     public function setCrawlObservers(array $crawlObservers): self
     {
         $this->crawlObservers = new CrawlObserverCollection($crawlObservers);
+
+        return $this;
+    }
+
+    public function setLinkRejector(LinkRejector $linkRejector): static
+    {
+        $this->linkRejector = $linkRejector;
 
         return $this;
     }

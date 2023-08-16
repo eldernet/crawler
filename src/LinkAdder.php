@@ -54,6 +54,10 @@ class LinkAdder
                     return true;
                 }
 
+                if($this->crawler->linkRejector !== null && $this->crawler->linkRejector->reject($link) === true) {
+                    return true;
+                }
+
                 return false;
             })
             ->map(function (Link $link) {

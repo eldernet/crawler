@@ -39,7 +39,7 @@ app.get('/link3', function (request, response) {
 });
 
 app.get('/dir/link4', function (request, response) {
-    response.end('You are on /dir/link4<a href="link5">link 5</a>');
+    response.end('You are on /dir/link4<a href="/dir/link5">link 5</a>');
 });
 
 app.get('/dir/link5', function (request, response) {
@@ -124,6 +124,10 @@ app.get('/content-types/video.html', function (request, response) {
 
 app.get('/incomplete-href', function (request, response) {
     response.end('Valid href: <a href="/link1-next">valid link</a>, Empty href: <a href="/link1-prev"></a>, Incomplete href: <a href="/invalid-link');
+});
+
+app.get('/has-disabled-links', function (request, response) {
+    response.end('<a href="/link1">Link1</a><a disabled href="/link2">Link2</a><a href="dir/link4" disabled="disabled">Link4</a>');
 });
 
 app.get('/robots.txt', function (req, res) {

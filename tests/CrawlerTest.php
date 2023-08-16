@@ -13,6 +13,8 @@ use Spatie\Crawler\CrawlProfiles\CrawlSubdomains;
 use Spatie\Crawler\Exceptions\InvalidCrawlRequestHandler;
 use Spatie\Crawler\Test\TestClasses\CrawlLogger;
 use Spatie\Crawler\Test\TestClasses\Log;
+use Spatie\Crawler\LinkRejector;
+use Symfony\Component\DomCrawler\Link;
 use stdClass;
 
 beforeEach(function () {
@@ -118,8 +120,7 @@ it('has a method to disable executing javascript', function () {
 });
 
 it('uses a crawl profile to determine what should be crawled', function () {
-    $crawlProfile = new class() extends CrawlProfile
-    {
+    $crawlProfile = new class () extends CrawlProfile {
         public function shouldCrawl(UriInterface $url): bool
         {
             return $url->getPath() !== '/link3';
@@ -181,8 +182,7 @@ it('uses crawl profile for internal urls', function () {
 });
 
 it('can handle pages with invalid urls', function () {
-    $crawlProfile = new class() extends CrawlProfile
-    {
+    $crawlProfile = new class () extends CrawlProfile {
         public function shouldCrawl(UriInterface $url): bool
         {
             return true;
@@ -293,7 +293,6 @@ it('will crawl to specified depth', function () {
 
     expect([
         ['url' => 'http://localhost:8080/notExists'],
-        ['url' => 'http://localhost:8080/dir/link5'],
         ['url' => 'http://localhost:8080/dir/subdir/link5'],
     ])->each->notToBeCrawled();
 });
@@ -339,7 +338,6 @@ it('crawls subdomains', function () {
 
     expect([
         ['url' => 'http://localhost:8080/notExists'],
-        ['url' => 'http://localhost:8080/dir/link5'],
         ['url' => 'http://localhost:8080/dir/subdir/link5'],
         ['url' => 'http://example.com/', 'foundOn' => 'http://localhost:8080/link1'],
     ])->each->notToBeCrawled();
@@ -457,6 +455,34 @@ it('will not crawl half parsed href tags', function () {
         ->notToBeCrawled();
 
     assertCrawledUrlCount(3);
+});
+
+it('should not crawl links rejected by LinkRejector', function () {
+    createCrawler()
+        ->setLinkRejector(
+            new class () implements LinkRejector {
+                public function reject(Link $link): bool
+                {
+                    return ($link->getNode()->hasAttribute('disabled') && $link->getNode()->getAttribute('disabled') == true);
+                }
+            }
+        )
+        ->startCrawling('http://localhost:8080/has-disabled-links');
+
+    expect([
+        ['url' => 'http://localhost:8080/has-disabled-links'],
+        ['url' => 'http://localhost:8080/link1', 'foundOn' => 'http://localhost:8080/has-disabled-links'],
+        ['url' => 'http://localhost:8080/link1-prev', 'foundOn' => 'http://localhost:8080/link1'],
+        ['url' => 'http://localhost:8080/link1-next', 'foundOn' => 'http://localhost:8080/link1'],
+        ['url' => 'http://example.com/', 'foundOn' => 'http://localhost:8080/link1'],
+    ])->each->toBeCrawledOnce();
+
+    expect([
+        ['url' => 'http://localhost:8080/link2', 'foundOn' => 'http://localhost:8080/has-disabled-links'],
+        ['url' => 'http://localhost:8080/dir/link4', 'foundOn' => 'http://localhost:8080/has-disabled-links'],
+    ])->each->notToBeCrawled();
+
+    assertCrawledUrlCount(5);
 });
 
 function javascriptInjectedUrls(): array
