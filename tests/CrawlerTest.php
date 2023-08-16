@@ -464,7 +464,6 @@ it('should not crawl links rejected by LinkRejector', function () {
                 public function reject(Link $link): bool
                 {
                     return ($link->getNode()->hasAttribute('disabled') && $link->getNode()->getAttribute('disabled') == true);
-                    // return ($link->getNode()->hasAttribute('data-method') && strtolower($link->getNode()->getAttribute('data-method')) != 'get');
                 }
             }
         )

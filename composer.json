@@ -37,12 +37,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Spatie\\Crawler\\": "src"
+      "Eldernet\\Crawler\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Spatie\\Crawler\\Test\\": "tests"
+      "Eldernet\\Crawler\\Test\\": "tests"
     }
   },
   "scripts": {
