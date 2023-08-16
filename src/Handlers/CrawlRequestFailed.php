@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\Crawler\Handlers;
+namespace Eldernet\Crawler\Handlers;
 
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
-use Spatie\Crawler\Crawler;
+use Eldernet\Crawler\Crawler;
 
 class CrawlRequestFailed
 {

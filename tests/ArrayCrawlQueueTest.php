@@ -1,8 +1,8 @@
 <?php
 
 use GuzzleHttp\Psr7\Uri;
-use Spatie\Crawler\CrawlQueues\ArrayCrawlQueue;
-use Spatie\Crawler\CrawlUrl;
+use Eldernet\Crawler\CrawlQueues\ArrayCrawlQueue;
+use Eldernet\Crawler\CrawlUrl;
 
 beforeEach(function () {
     $this->crawlQueue = new ArrayCrawlQueue();

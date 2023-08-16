@@ -30,17 +30,17 @@ composer require spatie/crawler
 The crawler can be instantiated like this
 
 ```php
-use Spatie\Crawler\Crawler;
+use Eldernet\Crawler\Crawler;
 
 Crawler::create()
-    ->setCrawlObserver(<class that extends \Spatie\Crawler\CrawlObservers\CrawlObserver>)
+    ->setCrawlObserver(<class that extends \Eldernet\Crawler\CrawlObservers\CrawlObserver>)
     ->startCrawling($url);
 ```
 
-The argument passed to `setCrawlObserver` must be an object that extends the `\Spatie\Crawler\CrawlObservers\CrawlObserver` abstract class:
+The argument passed to `setCrawlObserver` must be an object that extends the `\Eldernet\Crawler\CrawlObservers\CrawlObserver` abstract class:
 
 ```php
-namespace Spatie\Crawler\CrawlObservers;
+namespace Eldernet\Crawler\CrawlObservers;
 
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
@@ -91,8 +91,8 @@ You can set multiple observers with `setCrawlObservers`:
 ```php
 Crawler::create()
     ->setCrawlObservers([
-        <class that extends \Spatie\Crawler\CrawlObservers\CrawlObserver>,
-        <class that extends \Spatie\Crawler\CrawlObservers\CrawlObserver>,
+        <class that extends \Eldernet\Crawler\CrawlObservers\CrawlObserver>,
+        <class that extends \Eldernet\Crawler\CrawlObservers\CrawlObserver>,
         ...
      ])
     ->startCrawling($url);
@@ -102,9 +102,9 @@ Alternatively you can set multiple observers one by one with `addCrawlObserver`:
 
 ```php
 Crawler::create()
-    ->addCrawlObserver(<class that extends \Spatie\Crawler\CrawlObservers\CrawlObserver>)
-    ->addCrawlObserver(<class that extends \Spatie\Crawler\CrawlObservers\CrawlObserver>)
-    ->addCrawlObserver(<class that extends \Spatie\Crawler\CrawlObservers\CrawlObserver>)
+    ->addCrawlObserver(<class that extends \Eldernet\Crawler\CrawlObservers\CrawlObserver>)
+    ->addCrawlObserver(<class that extends \Eldernet\Crawler\CrawlObservers\CrawlObserver>)
+    ->addCrawlObserver(<class that extends \Eldernet\Crawler\CrawlObservers\CrawlObserver>)
     ->startCrawling($url);
 ```
 
@@ -138,7 +138,7 @@ These system dependencies are only required if you're calling `executeJavaScript
 ### Filtering certain urls
 
 You can tell the crawler not to visit certain urls by using the `setCrawlProfile`-function. That function expects
-an object that extends `Spatie\Crawler\CrawlProfiles\CrawlProfile`:
+an object that extends `Eldernet\Crawler\CrawlProfiles\CrawlProfile`:
 
 ```php
 /*
@@ -375,11 +375,11 @@ When crawling a site the crawler will put urls to be crawled in a queue. By defa
 
 When a site is very large you may want to store that queue elsewhere, maybe a database. In such cases, you can write your own crawl queue.
 
-A valid crawl queue is any class that implements the `Spatie\Crawler\CrawlQueues\CrawlQueue`-interface. You can pass your custom crawl queue via the `setCrawlQueue` method on the crawler.
+A valid crawl queue is any class that implements the `Eldernet\Crawler\CrawlQueues\CrawlQueue`-interface. You can pass your custom crawl queue via the `setCrawlQueue` method on the crawler.
 
 ```php
 Crawler::create()
-    ->setCrawlQueue(<implementation of \Spatie\Crawler\CrawlQueues\CrawlQueue>)
+    ->setCrawlQueue(<implementation of \Eldernet\Crawler\CrawlQueues\CrawlQueue>)
 ```
 
 Here

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler;
+namespace Eldernet\Crawler;
 
 use Illuminate\Support\Collection;
 use InvalidArgumentException;

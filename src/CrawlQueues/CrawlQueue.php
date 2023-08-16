@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\Crawler\CrawlQueues;
+namespace Eldernet\Crawler\CrawlQueues;
 
 use Psr\Http\Message\UriInterface;
-use Spatie\Crawler\CrawlUrl;
+use Eldernet\Crawler\CrawlUrl;
 
 interface CrawlQueue
 {

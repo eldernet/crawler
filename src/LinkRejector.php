@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler;
+namespace Eldernet\Crawler;
 
 use Symfony\Component\DomCrawler\Link;
 

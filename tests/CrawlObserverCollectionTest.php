@@ -6,13 +6,12 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-use Spatie\Crawler\CrawlObservers\CrawlObserver;
-use Spatie\Crawler\CrawlObservers\CrawlObserverCollection;
-use Spatie\Crawler\CrawlUrl;
+use Eldernet\Crawler\CrawlObservers\CrawlObserver;
+use Eldernet\Crawler\CrawlObservers\CrawlObserverCollection;
+use Eldernet\Crawler\CrawlUrl;
 
 beforeEach(function () {
-    $this->crawlObserver = new class() extends CrawlObserver
-    {
+    $this->crawlObserver = new class () extends CrawlObserver {
         public $crawled = false;
 
         public $failed = false;

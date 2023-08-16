@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler\Handlers;
+namespace Eldernet\Crawler\Handlers;
 
 use Exception;
 use GuzzleHttp\Psr7\Uri;
@@ -9,12 +9,12 @@ use GuzzleHttp\RedirectMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use Spatie\Crawler\Crawler;
-use Spatie\Crawler\CrawlerRobots;
-use Spatie\Crawler\CrawlProfiles\CrawlSubdomains;
-use Spatie\Crawler\CrawlUrl;
-use Spatie\Crawler\LinkAdder;
-use Spatie\Crawler\ResponseWithCachedBody;
+use Eldernet\Crawler\Crawler;
+use Eldernet\Crawler\CrawlerRobots;
+use Eldernet\Crawler\CrawlProfiles\CrawlSubdomains;
+use Eldernet\Crawler\CrawlUrl;
+use Eldernet\Crawler\LinkAdder;
+use Eldernet\Crawler\ResponseWithCachedBody;
 
 class CrawlRequestFulfilled
 {

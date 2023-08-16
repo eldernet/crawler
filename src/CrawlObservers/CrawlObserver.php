@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler\CrawlObservers;
+namespace Eldernet\Crawler\CrawlObservers;
 
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;

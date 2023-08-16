@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler\CrawlProfiles;
+namespace Eldernet\Crawler\CrawlProfiles;
 
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;

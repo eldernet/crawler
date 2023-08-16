@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler\Exceptions;
+namespace Eldernet\Crawler\Exceptions;
 
 use RuntimeException;
 

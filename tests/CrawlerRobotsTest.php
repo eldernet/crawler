@@ -1,7 +1,7 @@
 <?php
 
-use Spatie\Crawler\Crawler;
-use Spatie\Crawler\Test\TestClasses\Log;
+use Eldernet\Crawler\Crawler;
+use Eldernet\Crawler\Test\TestClasses\Log;
 
 beforeEach(function () {
     skipIfTestServerIsNotRunning();

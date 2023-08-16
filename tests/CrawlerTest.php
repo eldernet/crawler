@@ -1,19 +1,19 @@
 <?php
 
-namespace Spatie\Crawler\Test;
+namespace Eldernet\Crawler\Test;
 
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\UriInterface;
 use Spatie\Browsershot\Browsershot;
-use Spatie\Crawler\Crawler;
-use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
-use Spatie\Crawler\CrawlProfiles\CrawlProfile;
-use Spatie\Crawler\CrawlProfiles\CrawlSubdomains;
-use Spatie\Crawler\Exceptions\InvalidCrawlRequestHandler;
-use Spatie\Crawler\Test\TestClasses\CrawlLogger;
-use Spatie\Crawler\Test\TestClasses\Log;
-use Spatie\Crawler\LinkRejector;
+use Eldernet\Crawler\Crawler;
+use Eldernet\Crawler\CrawlProfiles\CrawlInternalUrls;
+use Eldernet\Crawler\CrawlProfiles\CrawlProfile;
+use Eldernet\Crawler\CrawlProfiles\CrawlSubdomains;
+use Eldernet\Crawler\Exceptions\InvalidCrawlRequestHandler;
+use Eldernet\Crawler\Test\TestClasses\CrawlLogger;
+use Eldernet\Crawler\Test\TestClasses\Log;
+use Eldernet\Crawler\LinkRejector;
 use Symfony\Component\DomCrawler\Link;
 use stdClass;
 
@@ -464,6 +464,7 @@ it('should not crawl links rejected by LinkRejector', function () {
                 public function reject(Link $link): bool
                 {
                     return ($link->getNode()->hasAttribute('disabled') && $link->getNode()->getAttribute('disabled') == true);
+                    // return ($link->getNode()->hasAttribute('data-method') && strtolower($link->getNode()->getAttribute('data-method')) != 'get');
                 }
             }
         )

@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler\Test\TestClasses;
+namespace Eldernet\Crawler\Test\TestClasses;
 
 class Log
 {

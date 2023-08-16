@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Crawler;
+namespace Eldernet\Crawler;
 
 use Generator;
 use GuzzleHttp\Client;
@@ -10,15 +10,15 @@ use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\UriInterface;
 use Spatie\Browsershot\Browsershot;
-use Spatie\Crawler\CrawlObservers\CrawlObserver;
-use Spatie\Crawler\CrawlObservers\CrawlObserverCollection;
-use Spatie\Crawler\CrawlProfiles\CrawlAllUrls;
-use Spatie\Crawler\CrawlProfiles\CrawlProfile;
-use Spatie\Crawler\CrawlQueues\ArrayCrawlQueue;
-use Spatie\Crawler\CrawlQueues\CrawlQueue;
-use Spatie\Crawler\Exceptions\InvalidCrawlRequestHandler;
-use Spatie\Crawler\Handlers\CrawlRequestFailed;
-use Spatie\Crawler\Handlers\CrawlRequestFulfilled;
+use Eldernet\Crawler\CrawlObservers\CrawlObserver;
+use Eldernet\Crawler\CrawlObservers\CrawlObserverCollection;
+use Eldernet\Crawler\CrawlProfiles\CrawlAllUrls;
+use Eldernet\Crawler\CrawlProfiles\CrawlProfile;
+use Eldernet\Crawler\CrawlQueues\ArrayCrawlQueue;
+use Eldernet\Crawler\CrawlQueues\CrawlQueue;
+use Eldernet\Crawler\Exceptions\InvalidCrawlRequestHandler;
+use Eldernet\Crawler\Handlers\CrawlRequestFailed;
+use Eldernet\Crawler\Handlers\CrawlRequestFulfilled;
 use Spatie\Robots\RobotsTxt;
 use Tree\Node\Node;
 

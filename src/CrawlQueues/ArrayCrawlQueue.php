@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\Crawler\CrawlQueues;
+namespace Eldernet\Crawler\CrawlQueues;
 
 use Psr\Http\Message\UriInterface;
-use Spatie\Crawler\CrawlUrl;
-use Spatie\Crawler\Exceptions\InvalidUrl;
-use Spatie\Crawler\Exceptions\UrlNotFoundByIndex;
+use Eldernet\Crawler\CrawlUrl;
+use Eldernet\Crawler\Exceptions\InvalidUrl;
+use Eldernet\Crawler\Exceptions\UrlNotFoundByIndex;
 
 class ArrayCrawlQueue implements CrawlQueue
 {

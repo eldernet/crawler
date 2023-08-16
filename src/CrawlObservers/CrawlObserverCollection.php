@@ -1,12 +1,12 @@
 <?php
 
-namespace Spatie\Crawler\CrawlObservers;
+namespace Eldernet\Crawler\CrawlObservers;
 
 use ArrayAccess;
 use GuzzleHttp\Exception\RequestException;
 use Iterator;
 use Psr\Http\Message\ResponseInterface;
-use Spatie\Crawler\CrawlUrl;
+use Eldernet\Crawler\CrawlUrl;
 
 class CrawlObserverCollection implements ArrayAccess, Iterator
 {

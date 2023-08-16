@@ -15,6 +15,6 @@ The signatures of the `willCrawl`, `crawled` and `crawlFailed` all gained an ext
 ## From v2 to v3
 
 - PHP 7.1 is now required as a minimum version.
-- Instead of using our custom `\Spatie\Crawler\Url` object, we're now using the `Psr\Http\Message\UriInterface`. 
+- Instead of using our custom `\Eldernet\Crawler\Url` object, we're now using the `Psr\Http\Message\UriInterface`. 
 Custom Profiles and Observers will need to be changed to have the correct arguments and return types.
 We're using `\GuzzleHttp\Psr7\Uri` as the concrete URI implementation.

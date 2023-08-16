@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\Crawler\Exceptions;
+namespace Eldernet\Crawler\Exceptions;
 
 use Exception;
 use Psr\Http\Message\UriInterface;
-use Spatie\Crawler\CrawlUrl;
+use Eldernet\Crawler\CrawlUrl;
 
 class InvalidUrl extends Exception
 {
