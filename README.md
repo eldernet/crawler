@@ -153,6 +153,26 @@ This package comes with three `CrawlProfiles` out of the box:
 - `CrawlInternalUrls`: this profile will only crawl the internal urls on the pages of a host.
 - `CrawlSubdomains`: this profile will only crawl the internal urls and its subdomains on the pages of a host.
 
+### Custom link extraction
+
+You can customize how links are extracted from a page by passing a custom `UrlParser` to the crawler.
+
+```php
+Crawler::create()
+    ->setUrlParserClass(<class that implements \Spatie\Crawler\UrlParsers\UrlParser>::class)
+    ...
+```
+
+By default, the `LinkUrlParser` is used. This parser will extract all links from the `href` attribute of `a` tags.
+
+There is also a built-in `SitemapUrlParser` that will extract & crawl all links from a sitemap. It does support sitemap index files.
+
+```php
+Crawler::create()
+    ->setUrlParserClass(SitemapUrlParser::class)
+    ...
+```
+
 ### Ignoring robots.txt and robots meta
 
 By default, the crawler will respect robots data. It is possible to disable these checks like so:
@@ -217,7 +237,7 @@ Let's take a look at some examples to clarify the difference between these two m
 
 ### Example 1: Using the total crawl limit
 
-The `setTotalCrawlLimit` method allows to limit the total number of URLs to crawl, no matter often you call the crawler.
+The `setTotalCrawlLimit` method allows you to limit the total number of URLs to crawl, no matter how often you call the crawler.
 
 ```php
 $queue = <your selection/implementation of a queue>;

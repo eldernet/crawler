@@ -1,15 +1,18 @@
 <?php
 
-namespace Eldernet\Crawler;
+namespace Eldernet\Crawler\UrlParsers;
 
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
+use Spatie\Crawler\Crawler;
+use Spatie\Crawler\CrawlUrl;
+use Spatie\Crawler\Url;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Symfony\Component\DomCrawler\Link;
 use Tree\Node\Node;
 
-class LinkAdder
+class LinkUrlParser implements UrlParser
 {
     protected Crawler $crawler;
 
@@ -18,15 +21,15 @@ class LinkAdder
         $this->crawler = $crawler;
     }
 
-    public function addFromHtml(string $html, UriInterface $foundOnUrl): void
+    public function addFromHtml(string $html, UriInterface $foundOnUrl, ?UriInterface $originalUrl = null): void
     {
         $allLinks = $this->extractLinksFromHtml($html, $foundOnUrl);
 
         collect($allLinks)
             ->filter(fn (Url $url) => $this->hasCrawlableScheme($url))
             ->map(fn (Url $url) => $this->normalizeUrl($url))
-            ->filter(function (Url $url) use ($foundOnUrl) {
-                if (! $node = $this->crawler->addToDepthTree($url, $foundOnUrl)) {
+            ->filter(function (Url $url) use ($foundOnUrl, $originalUrl) {
+                if (! $node = $this->crawler->addToDepthTree($url, $foundOnUrl, null, $originalUrl)) {
                     return false;
                 }
 
@@ -70,7 +73,7 @@ class LinkAdder
 
                     return new Url($link->getUri(), $linkText);
                 } catch (InvalidArgumentException $exception) {
-                    return;
+                    return null;
                 }
             })
             ->filter();

@@ -16,6 +16,7 @@ use Eldernet\Crawler\Test\TestClasses\Log;
 use Eldernet\Crawler\LinkRejector;
 use Symfony\Component\DomCrawler\Link;
 use stdClass;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 beforeEach(function () {
     skipIfTestServerIsNotRunning();
@@ -72,7 +73,7 @@ it('can crawl all links rendered by javascript', function () {
     $crawler = Crawler::create();
 
     if (getenv('TRAVIS')) {
-        $browsershot = new Browsershot();
+        $browsershot = new Browsershot;
 
         $browsershot->noSandbox();
 
@@ -81,7 +82,7 @@ it('can crawl all links rendered by javascript', function () {
 
     $crawler
         ->executeJavaScript()
-        ->setCrawlObserver(new CrawlLogger())
+        ->setCrawlObserver(new CrawlLogger)
         ->startCrawling('http://localhost:8080');
 
     expect(regularUrls())->each->toBeCrawledOnce();
@@ -90,7 +91,7 @@ it('can crawl all links rendered by javascript', function () {
 });
 
 it('allows for a browsershot instance to be set', function () {
-    $browsershot = new Browsershot();
+    $browsershot = new Browsershot;
 
     if (getenv('TRAVIS')) {
         $browsershot->noSandbox();
@@ -99,7 +100,7 @@ it('allows for a browsershot instance to be set', function () {
     Crawler::create()
         ->setBrowsershot($browsershot)
         ->executeJavaScript()
-        ->setCrawlObserver(new CrawlLogger())
+        ->setCrawlObserver(new CrawlLogger)
         ->startCrawling('http://localhost:8080');
 
     expect(regularUrls())->each->toBeCrawledOnce();
@@ -111,7 +112,7 @@ it('has a method to disable executing javascript', function () {
     Crawler::create()
         ->executeJavaScript()
         ->doNotExecuteJavaScript()
-        ->setCrawlObserver(new CrawlLogger())
+        ->setCrawlObserver(new CrawlLogger)
         ->startCrawling('http://localhost:8080');
 
     expect(regularUrls())->each->toBeCrawledOnce();
@@ -119,8 +120,27 @@ it('has a method to disable executing javascript', function () {
     expect(javascriptInjectedUrls())->each->notToBeCrawled();
 });
 
+it('fails gracefully when browsershot fails', function () {
+    expect(function () {
+        $browsershot = (new Browsershot)->waitUntilNetworkIdle();
+
+        Crawler::create([
+            RequestOptions::CONNECT_TIMEOUT => 60,
+            RequestOptions::TIMEOUT => 60,
+            RequestOptions::READ_TIMEOUT => 60,
+        ])
+            ->setBrowsershot($browsershot)
+            ->executeJavaScript()
+            ->setCrawlObserver(new CrawlLogger)
+            ->startCrawling('http://localhost:8080/simulate-activity');
+    })->not->toThrow(ProcessFailedException::class);
+
+    expect(['url' => 'http://localhost:8080/simulate-activity'])->toBeCrawledOnce();
+});
+
 it('uses a crawl profile to determine what should be crawled', function () {
-    $crawlProfile = new class () extends CrawlProfile {
+    $crawlProfile = new class extends CrawlProfile
+    {
         public function shouldCrawl(UriInterface $url): bool
         {
             return $url->getPath() !== '/link3';
@@ -128,7 +148,7 @@ it('uses a crawl profile to determine what should be crawled', function () {
     };
 
     createCrawler()
-        ->setCrawlProfile(new $crawlProfile())
+        ->setCrawlProfile(new $crawlProfile)
         ->startCrawling('http://localhost:8080');
 
     expect([
@@ -182,7 +202,8 @@ it('uses crawl profile for internal urls', function () {
 });
 
 it('can handle pages with invalid urls', function () {
-    $crawlProfile = new class () extends CrawlProfile {
+    $crawlProfile = new class extends CrawlProfile
+    {
         public function shouldCrawl(UriInterface $url): bool
         {
             return true;
@@ -362,6 +383,18 @@ it('should handle redirects correctly when tracking is active', function () {
     assertCrawledUrlCount(3);
 });
 
+it('should handle redirects correctly when max depth is specified', function () {
+    createCrawler([
+        RequestOptions::ALLOW_REDIRECTS => [
+            'track_redirects' => true,
+        ],
+    ])
+        ->setMaximumDepth(5)
+        ->startCrawling('http://localhost:8080/redirect-home/');
+
+    expect(['url' => 'http://localhost:8080/link1', 'foundOn' => 'http://localhost:8080/'])->toBeCrawledOnce();
+});
+
 it('respects the requested delay between requests', function () {
     $baseUrl = 'http://localhost:8080';
 
@@ -403,8 +436,8 @@ it('will only crawl correct mime types when asked to', function () {
         ->startCrawling('http://localhost:8080/content-types');
 
     $urls = [
-        ['url' => 'http://localhost:8080/content-types/music.html', 'foundOn' => 'http://localhost:8080/content-types/music.mp3'],
-        ['url' => 'http://localhost:8080/content-types/video.html', 'foundOn' => 'http://localhost:8080/content-types/video.mkv'],
+        ['url' => 'http://localhost:8080/content-types/music.mp3', 'foundOn' => 'http://localhost:8080/content-types'],
+        ['url' => 'http://localhost:8080/content-types/video.mkv', 'foundOn' => 'http://localhost:8080/content-types'],
         ['url' => 'http://localhost:8080/content-types/normal.html', 'foundOn' => 'http://localhost:8080/content-types'],
     ];
 
@@ -420,7 +453,34 @@ it('will only crawl correct mime types when asked to', function () {
         },
     );
 
-    assertCrawledUrlCount(4);
+    assertCrawledUrlCount(2);
+});
+
+it('will only crawl correct mime types when asked to when executing javascript', function () {
+    createCrawler()
+        ->executeJavaScript()
+        ->setParseableMimeTypes(['text/html', 'text/plain'])
+        ->startCrawling('http://localhost:8080/content-types');
+
+    $urls = [
+        ['url' => 'http://localhost:8080/content-types/music.mp3', 'foundOn' => 'http://localhost:8080/content-types'],
+        ['url' => 'http://localhost:8080/content-types/video.mkv', 'foundOn' => 'http://localhost:8080/content-types'],
+        ['url' => 'http://localhost:8080/content-types/normal.html', 'foundOn' => 'http://localhost:8080/content-types'],
+    ];
+
+    expect($urls)->sequence(
+        function ($url) {
+            $url->notToBeCrawled();
+        },
+        function ($url) {
+            $url->notToBeCrawled();
+        },
+        function ($url) {
+            $url->toBeCrawledOnce();
+        },
+    );
+
+    assertCrawledUrlCount(2);
 });
 
 it('will crawl all content types when not explicitly whitelisted', function () {

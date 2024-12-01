@@ -11,7 +11,8 @@ use Eldernet\Crawler\CrawlObservers\CrawlObserverCollection;
 use Eldernet\Crawler\CrawlUrl;
 
 beforeEach(function () {
-    $this->crawlObserver = new class () extends CrawlObserver {
+    $this->crawlObserver = new class extends CrawlObserver
+    {
         public $crawled = false;
 
         public $failed = false;
@@ -19,8 +20,8 @@ beforeEach(function () {
         public function crawled(
             UriInterface $url,
             ResponseInterface $response,
-            UriInterface $foundOnUrl = null,
-            string $linkText = null,
+            ?UriInterface $foundOnUrl = null,
+            ?string $linkText = null,
         ): void {
             $this->crawled = true;
         }
@@ -28,8 +29,8 @@ beforeEach(function () {
         public function crawlFailed(
             UriInterface $url,
             RequestException $requestException,
-            UriInterface $foundOnUrl = null,
-            string $linkText = null,
+            ?UriInterface $foundOnUrl = null,
+            ?string $linkText = null,
         ): void {
             $this->failed = true;
         }
@@ -43,7 +44,7 @@ it('can be fulfilled', function () {
 
     $observers->crawled(
         CrawlUrl::create(new Uri('')),
-        new Response()
+        new Response
     );
 
     expect($this->crawlObserver)

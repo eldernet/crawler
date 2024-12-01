@@ -2,6 +2,80 @@
 
 All notable changes to `spatie/crawler` will be documented in this file.
 
+## 8.2.3 - 2024-07-31
+
+### What's Changed
+
+* Fix setParsableMimeTypes() by @superpenguin612 in https://github.com/spatie/crawler/pull/470
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.2.2...8.2.3
+
+## 8.2.1 - 2024-07-16
+
+### What's Changed
+
+* Check original URL against depth tree when visited link is a redirect by @superpenguin612 in https://github.com/spatie/crawler/pull/467
+
+### New Contributors
+
+* @superpenguin612 made their first contribution in https://github.com/spatie/crawler/pull/467
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.2.0...8.2.1
+
+## 8.2.0 - 2024-02-15
+
+### What's Changed
+
+* Fix wording in documentation by @adamtomat in https://github.com/spatie/crawler/pull/460
+* Add Laravel/Illuminate 11 Support by @Jubeki in https://github.com/spatie/crawler/pull/461
+
+### New Contributors
+
+* @adamtomat made their first contribution in https://github.com/spatie/crawler/pull/460
+* @Jubeki made their first contribution in https://github.com/spatie/crawler/pull/461
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.1.0...8.2.0
+
+## 8.1.0 - 2024-01-02
+
+### What's Changed
+
+* feat: custom link parser by @Velka-DEV in https://github.com/spatie/crawler/pull/458
+
+### New Contributors
+
+* @Velka-DEV made their first contribution in https://github.com/spatie/crawler/pull/458
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.0.4...8.1.0
+
+## 8.0.4 - 2023-12-29
+
+- allow Browsershot v4
+
+## 8.0.3 - 2023-11-22
+
+### What's Changed
+
+- Fix return type by @riesjart in https://github.com/spatie/crawler/pull/452
+
+### New Contributors
+
+- @riesjart made their first contribution in https://github.com/spatie/crawler/pull/452
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.0.2...8.0.3
+
+## 8.0.2 - 2023-11-20
+
+### What's Changed
+
+- Define only needed methods in observer implementation by @buismaarten in https://github.com/spatie/crawler/pull/449
+
+### New Contributors
+
+- @buismaarten made their first contribution in https://github.com/spatie/crawler/pull/449
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.0.1...8.0.2
+
 ## 8.0.1 - 2023-07-19
 
 ### What's Changed

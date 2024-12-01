@@ -19,6 +19,7 @@ use Eldernet\Crawler\CrawlQueues\CrawlQueue;
 use Eldernet\Crawler\Exceptions\InvalidCrawlRequestHandler;
 use Eldernet\Crawler\Handlers\CrawlRequestFailed;
 use Eldernet\Crawler\Handlers\CrawlRequestFulfilled;
+use Eldernet\Crawler\UrlParsers\LinkUrlParser;
 use Spatie\Robots\RobotsTxt;
 use Tree\Node\Node;
 
@@ -62,6 +63,8 @@ class Crawler
 
     protected string $crawlRequestFailedClass;
 
+    protected string $urlParserClass;
+
     protected int $delayBetweenRequests = 0;
 
     protected array $allowedMimeTypes = [];
@@ -95,15 +98,17 @@ class Crawler
         protected Client $client,
         protected int $concurrency = 10,
     ) {
-        $this->crawlProfile = new CrawlAllUrls();
+        $this->crawlProfile = new CrawlAllUrls;
 
-        $this->crawlQueue = new ArrayCrawlQueue();
+        $this->crawlQueue = new ArrayCrawlQueue;
 
-        $this->crawlObservers = new CrawlObserverCollection();
+        $this->crawlObservers = new CrawlObserverCollection;
 
         $this->crawlRequestFulfilledClass = CrawlRequestFulfilled::class;
 
         $this->crawlRequestFailedClass = CrawlRequestFailed::class;
+
+        $this->urlParserClass = LinkUrlParser::class;
     }
 
     public function getDefaultScheme(): string
@@ -354,6 +359,18 @@ class Crawler
         return $this;
     }
 
+    public function setUrlParserClass(string $urlParserClass): self
+    {
+        $this->urlParserClass = $urlParserClass;
+
+        return $this;
+    }
+
+    public function getUrlParserClass(): string
+    {
+        return $this->urlParserClass;
+    }
+
     public function setBrowsershot(Browsershot $browsershot)
     {
         $this->browsershot = $browsershot;
@@ -391,7 +408,7 @@ class Crawler
     public function getBrowsershot(): Browsershot
     {
         if (! $this->browsershot) {
-            $this->browsershot = new Browsershot();
+            $this->browsershot = new Browsershot;
         }
 
         return $this->browsershot;
@@ -439,7 +456,7 @@ class Crawler
         }
     }
 
-    public function addToDepthTree(UriInterface $url, UriInterface $parentUrl, Node $node = null): ?Node
+    public function addToDepthTree(UriInterface $url, UriInterface $parentUrl, ?Node $node = null, ?UriInterface $originalUrl = null): ?Node
     {
         if (is_null($this->maximumDepth)) {
             return new Node((string) $url);
@@ -449,7 +466,7 @@ class Crawler
 
         $returnNode = null;
 
-        if ($node->getValue() === (string) $parentUrl) {
+        if ($node->getValue() === (string) $parentUrl || $node->getValue() === (string) $originalUrl) {
             $newNode = new Node((string) $url);
 
             $node->addChild($newNode);
@@ -458,7 +475,7 @@ class Crawler
         }
 
         foreach ($node->getChildren() as $currentNode) {
-            $returnNode = $this->addToDepthTree($url, $parentUrl, $currentNode);
+            $returnNode = $this->addToDepthTree($url, $parentUrl, $currentNode, $originalUrl);
 
             if (! is_null($returnNode)) {
                 break;

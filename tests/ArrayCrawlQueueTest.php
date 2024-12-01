@@ -5,7 +5,7 @@ use Eldernet\Crawler\CrawlQueues\ArrayCrawlQueue;
 use Eldernet\Crawler\CrawlUrl;
 
 beforeEach(function () {
-    $this->crawlQueue = new ArrayCrawlQueue();
+    $this->crawlQueue = new ArrayCrawlQueue;
 });
 
 test('a url can be added to crawl queue', function () {
