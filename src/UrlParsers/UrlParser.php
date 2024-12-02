@@ -1,9 +1,9 @@
 <?php
 
-namespace Spatie\Crawler\UrlParsers;
+namespace Eldernet\Crawler\UrlParsers;
 
 use Psr\Http\Message\UriInterface;
-use Spatie\Crawler\Crawler;
+use Eldernet\Crawler\Crawler;
 
 interface UrlParser
 {

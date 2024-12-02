@@ -1,13 +1,13 @@
 <?php
 
-namespace Spatie\Crawler\UrlParsers;
+namespace Eldernet\Crawler\UrlParsers;
 
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
-use Spatie\Crawler\Crawler;
-use Spatie\Crawler\CrawlUrl;
-use Spatie\Crawler\Url;
+use Eldernet\Crawler\Crawler;
+use Eldernet\Crawler\CrawlUrl;
+use Eldernet\Crawler\Url;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Tree\Node\Node;
 

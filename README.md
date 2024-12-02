@@ -159,7 +159,7 @@ You can customize how links are extracted from a page by passing a custom `UrlPa
 
 ```php
 Crawler::create()
-    ->setUrlParserClass(<class that implements \Spatie\Crawler\UrlParsers\UrlParser>::class)
+    ->setUrlParserClass(<class that implements \Eldernet\Crawler\UrlParsers\UrlParser>::class)
     ...
 ```
 

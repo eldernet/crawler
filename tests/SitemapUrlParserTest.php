@@ -1,7 +1,7 @@
 <?php
 
-use Spatie\Crawler\Test\TestClasses\Log;
-use Spatie\Crawler\UrlParsers\SitemapUrlParser;
+use Eldernet\Crawler\Test\TestClasses\Log;
+use Eldernet\Crawler\UrlParsers\SitemapUrlParser;
 
 beforeEach(function () {
     skipIfTestServerIsNotRunning();

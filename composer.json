@@ -1,5 +1,5 @@
 {
-    "name": "Eldernet/crawler",
+    "name": "eldernet/crawler",
     "description": "Crawl all internal links found on a website",
     "keywords": [
         "spatie",
@@ -37,12 +37,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Crawler\\": "src"
+            "Eldernet\\Crawler\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Crawler\\Test\\": "tests"
+            "Eldernet\\Crawler\\Test\\": "tests"
         }
     },
     "minimum-stability": "dev",
