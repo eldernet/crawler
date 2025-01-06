@@ -2,6 +2,38 @@
 
 All notable changes to `spatie/crawler` will be documented in this file.
 
+## 8.4.0 - 2024-12-16
+
+### What's Changed
+
+* Add execution time limit by @VincentLanglet in https://github.com/spatie/crawler/pull/480
+
+### New Contributors
+
+* @VincentLanglet made their first contribution in https://github.com/spatie/crawler/pull/480
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.3.1...8.4.0
+
+## 8.3.1 - 2024-12-09
+
+### What's Changed
+
+* Upgrade spatie/browsershot to 5.0 by @hasansoyalan in https://github.com/spatie/crawler/pull/478
+
+### New Contributors
+
+* @hasansoyalan made their first contribution in https://github.com/spatie/crawler/pull/478
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.3.0...8.3.1
+
+## 8.3.0 - 2024-12-02
+
+### What's Changed
+
+* Add support for PHP 8.4 by @pascalbaljet in https://github.com/spatie/crawler/pull/477
+
+**Full Changelog**: https://github.com/spatie/crawler/compare/8.2.3...8.3.0
+
 ## 8.2.3 - 2024-07-31
 
 ### What's Changed
