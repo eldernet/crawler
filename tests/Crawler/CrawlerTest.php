@@ -12,10 +12,12 @@ use Eldernet\Crawler\Enums\FinishReason;
 use Eldernet\Crawler\Enums\ResourceType;
 use Eldernet\Crawler\Exceptions\InvalidCrawlRequestHandler;
 use Eldernet\Crawler\ExtractedUrl;
+use Eldernet\Crawler\LinkRejector;
 use Eldernet\Crawler\Test\TestClasses\CrawlLogger;
 use Eldernet\Crawler\Test\TestClasses\Log;
 use Eldernet\Crawler\UrlParsers\UrlParser;
 use stdClass;
+use Symfony\Component\DomCrawler\Link;
 
 beforeEach(function () {
     Log::reset();
@@ -519,6 +521,34 @@ it('should not follow nofollow links', function () {
 
     expect(['url' => 'https://example.com/nofollow', 'foundOn' => 'https://example.com/'])
         ->notToBeCrawled();
+});
+
+it('should not crawl links rejected by LinkRejector', function () {
+    createCrawler('https://example.com/has-disabled-links')
+        ->fake(fullSiteFakes())
+        ->setLinkRejector(new class implements LinkRejector
+        {
+            public function reject(Link $link): bool
+            {
+                return $link->getNode()->hasAttribute('disabled');
+            }
+        })
+        ->start();
+
+    expect([
+        ['url' => 'https://example.com/has-disabled-links'],
+        ['url' => 'https://example.com/link1', 'foundOn' => 'https://example.com/has-disabled-links'],
+        ['url' => 'https://example.com/link1-prev', 'foundOn' => 'https://example.com/link1'],
+        ['url' => 'https://example.com/link1-next', 'foundOn' => 'https://example.com/link1'],
+        ['url' => 'https://external.example.org/', 'foundOn' => 'https://example.com/link1'],
+    ])->each->toBeCrawledOnce();
+
+    expect([
+        ['url' => 'https://example.com/link2', 'foundOn' => 'https://example.com/has-disabled-links'],
+        ['url' => 'https://example.com/dir/link4', 'foundOn' => 'https://example.com/has-disabled-links'],
+    ])->each->notToBeCrawled();
+
+    expectCrawledUrlCount(5);
 });
 
 it('should handle redirects correctly when tracking is active', function () {

@@ -4,6 +4,7 @@ namespace Eldernet\Crawler\UrlParsers;
 
 use Eldernet\Crawler\Enums\ResourceType;
 use Eldernet\Crawler\ExtractedUrl;
+use Eldernet\Crawler\LinkRejector;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use InvalidArgumentException;
@@ -16,6 +17,7 @@ class LinkUrlParser implements UrlParser
     public function __construct(
         protected bool $rejectNofollowLinks = true,
         protected array $resourceTypes = [ResourceType::Link],
+        protected ?LinkRejector $linkRejector = null,
     ) {}
 
     /** @return array<int, ExtractedUrl> */
@@ -153,6 +155,10 @@ class LinkUrlParser implements UrlParser
         }
 
         if ($this->rejectNofollowLinks && str_contains($link->getNode()->getAttribute('rel'), 'nofollow')) {
+            return null;
+        }
+
+        if ($this->linkRejector?->reject($link)) {
             return null;
         }
 

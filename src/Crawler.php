@@ -61,6 +61,8 @@ class Crawler
 
     protected ?UrlParser $urlParser = null;
 
+    protected ?LinkRejector $linkRejector = null;
+
     protected int $delayBetweenRequests = 0;
 
     protected ?Throttle $throttle = null;
@@ -184,6 +186,13 @@ class Crawler
     public function rejectNofollowLinks(): self
     {
         $this->rejectNofollowLinks = true;
+
+        return $this;
+    }
+
+    public function setLinkRejector(LinkRejector $linkRejector): self
+    {
+        $this->linkRejector = $linkRejector;
 
         return $this;
     }
@@ -408,7 +417,7 @@ class Crawler
             return $this->urlParser;
         }
 
-        return new LinkUrlParser($this->rejectNofollowLinks, $this->extractResourceTypes);
+        return new LinkUrlParser($this->rejectNofollowLinks, $this->extractResourceTypes, $this->linkRejector);
     }
 
     public function getJavaScriptRenderer(): ?JavaScriptRenderer

@@ -80,6 +80,7 @@ function fullSiteFakes(): array
         'https://example.com/link1-next' => 'You are on link1-next. Next page of link1',
         'https://example.com/link1-prev' => 'You are on link1-prev. Previous page of link1',
         'https://example.com/link-with-html' => '<a href="/link1"><div title="some title"><div>Link text inner</div></div></a>',
+        'https://example.com/has-disabled-links' => '<a href="/link1">Link1</a><a href="/link2" disabled>Link2</a><a href="dir/link4" disabled>Link4</a>',
         'https://example.com/nofollow' => 'This page should not be crawled',
         'https://example.com/link2' => 'You are on link2<a href="/link3">Link3</a><a href="https://sub.example.com/subdomainpage">Subdomain</a><a href="https://subdomain.sub.example.com/subdomainpage">Subdomain2</a>',
         'https://example.com/link3' => 'You are on link3<a href="/notExists">not exists</a>',
