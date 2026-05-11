@@ -2,13 +2,13 @@
 
 namespace Eldernet\Crawler\Test\TestClasses;
 
-use GuzzleHttp\Exception\RequestException;
 use Eldernet\Crawler\CrawlObservers\CrawlObserver;
 use Eldernet\Crawler\CrawlProgress;
 use Eldernet\Crawler\CrawlResponse;
 use Eldernet\Crawler\Enums\FinishReason;
 use Eldernet\Crawler\Enums\ResourceType;
 use Eldernet\Crawler\TransferStatistics;
+use GuzzleHttp\Exception\RequestException;
 
 class CrawlLogger extends CrawlObserver
 {

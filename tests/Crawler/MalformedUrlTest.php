@@ -1,8 +1,8 @@
 <?php
 
-use GuzzleHttp\Exception\RequestException;
 use Eldernet\Crawler\Crawler;
 use Eldernet\Crawler\CrawlProgress;
+use GuzzleHttp\Exception\RequestException;
 
 it('reports malformed urls via crawlFailed', function () {
     $failed = [];

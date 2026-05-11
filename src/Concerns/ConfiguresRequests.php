@@ -2,6 +2,7 @@
 
 namespace Eldernet\Crawler\Concerns;
 
+use Eldernet\Crawler\Faking\FakeHandler;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -12,7 +13,6 @@ use GuzzleHttp\RequestOptions;
 use GuzzleHttp\TransferStats;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Eldernet\Crawler\Faking\FakeHandler;
 
 trait ConfiguresRequests
 {

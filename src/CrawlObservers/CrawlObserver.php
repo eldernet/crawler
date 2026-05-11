@@ -2,12 +2,12 @@
 
 namespace Eldernet\Crawler\CrawlObservers;
 
-use GuzzleHttp\Exception\RequestException;
 use Eldernet\Crawler\CrawlProgress;
 use Eldernet\Crawler\CrawlResponse;
 use Eldernet\Crawler\Enums\FinishReason;
 use Eldernet\Crawler\Enums\ResourceType;
 use Eldernet\Crawler\TransferStatistics;
+use GuzzleHttp\Exception\RequestException;
 
 abstract class CrawlObserver
 {

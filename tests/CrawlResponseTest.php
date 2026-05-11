@@ -1,8 +1,8 @@
 <?php
 
+use Eldernet\Crawler\CrawlResponse;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RedirectMiddleware;
-use Eldernet\Crawler\CrawlResponse;
 
 it('can get the status code', function () {
     $response = new CrawlResponse(new Response(200));

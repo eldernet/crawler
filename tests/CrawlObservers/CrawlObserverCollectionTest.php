@@ -1,8 +1,5 @@
 <?php
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use Eldernet\Crawler\CrawlObservers\CrawlObserver;
 use Eldernet\Crawler\CrawlObservers\CrawlObserverCollection;
 use Eldernet\Crawler\CrawlProgress;
@@ -11,6 +8,9 @@ use Eldernet\Crawler\CrawlUrl;
 use Eldernet\Crawler\Enums\FinishReason;
 use Eldernet\Crawler\Enums\ResourceType;
 use Eldernet\Crawler\TransferStatistics;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 
 function makeCrawlProgress(): CrawlProgress
 {

@@ -1,6 +1,5 @@
 <?php
 
-use GuzzleHttp\Middleware;
 use Eldernet\Crawler\Crawler;
 use Eldernet\Crawler\CrawlResponse;
 use Eldernet\Crawler\Test\TestServer\TestServer;
@@ -8,6 +7,7 @@ use Eldernet\Crawler\Throttlers\AdaptiveThrottle;
 use Eldernet\Crawler\Throttlers\FixedDelayThrottle;
 use Eldernet\Crawler\Throttlers\Throttle;
 use Eldernet\Crawler\TransferStatistics;
+use GuzzleHttp\Middleware;
 
 beforeAll(function () {
     TestServer::start();

@@ -1,6 +1,5 @@
 <?php
 
-use GuzzleHttp\Exception\RequestException;
 use Eldernet\Crawler\Crawler;
 use Eldernet\Crawler\CrawlProgress;
 use Eldernet\Crawler\CrawlResponse;
@@ -9,6 +8,7 @@ use Eldernet\Crawler\Enums\ResourceType;
 use Eldernet\Crawler\Test\TestClasses\CrawlLogger;
 use Eldernet\Crawler\Test\TestClasses\Log;
 use Eldernet\Crawler\TransferStatistics;
+use GuzzleHttp\Exception\RequestException;
 
 it('can use onWillCrawl closure', function () {
     $willCrawl = [];

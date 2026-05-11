@@ -2,12 +2,12 @@
 
 namespace Eldernet\Crawler\Faking;
 
+use Eldernet\Crawler\CrawlResponse;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RedirectMiddleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Eldernet\Crawler\CrawlResponse;
 
 class FakeHandler
 {

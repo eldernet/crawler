@@ -2,13 +2,6 @@
 
 namespace Eldernet\Crawler;
 
-use Exception;
-use Generator;
-use GuzzleHttp\Client;
-use GuzzleHttp\Pool;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\TransferStats;
-use Spatie\Browsershot\Browsershot;
 use Eldernet\Crawler\Concerns\ConfiguresRequests;
 use Eldernet\Crawler\Concerns\HasCrawlLimits;
 use Eldernet\Crawler\Concerns\HasCrawlObservers;
@@ -29,6 +22,13 @@ use Eldernet\Crawler\Throttlers\Throttle;
 use Eldernet\Crawler\UrlParsers\LinkUrlParser;
 use Eldernet\Crawler\UrlParsers\SitemapUrlParser;
 use Eldernet\Crawler\UrlParsers\UrlParser;
+use Exception;
+use Generator;
+use GuzzleHttp\Client;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\TransferStats;
+use Spatie\Browsershot\Browsershot;
 use Spatie\Robots\RobotsTxt;
 
 class Crawler

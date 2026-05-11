@@ -2,12 +2,12 @@
 
 namespace Eldernet\Crawler\Handlers;
 
+use Eldernet\Crawler\Crawler;
+use Eldernet\Crawler\TransferStatistics;
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
-use Eldernet\Crawler\Crawler;
-use Eldernet\Crawler\TransferStatistics;
 
 class CrawlRequestFailed
 {

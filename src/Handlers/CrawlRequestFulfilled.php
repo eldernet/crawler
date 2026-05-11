@@ -2,6 +2,11 @@
 
 namespace Eldernet\Crawler\Handlers;
 
+use Eldernet\Crawler\Crawler;
+use Eldernet\Crawler\CrawlerRobots;
+use Eldernet\Crawler\CrawlResponse;
+use Eldernet\Crawler\CrawlUrl;
+use Eldernet\Crawler\Enums\ResourceType;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -9,11 +14,6 @@ use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RedirectMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Eldernet\Crawler\Crawler;
-use Eldernet\Crawler\CrawlerRobots;
-use Eldernet\Crawler\CrawlResponse;
-use Eldernet\Crawler\CrawlUrl;
-use Eldernet\Crawler\Enums\ResourceType;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class CrawlRequestFulfilled

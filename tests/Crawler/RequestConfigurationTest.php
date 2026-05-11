@@ -1,8 +1,8 @@
 <?php
 
+use Eldernet\Crawler\Crawler;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\RequestOptions;
-use Eldernet\Crawler\Crawler;
 
 it('can set basic auth credentials', function () {
     $crawler = Crawler::create('https://example.com')

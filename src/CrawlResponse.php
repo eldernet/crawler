@@ -2,11 +2,11 @@
 
 namespace Eldernet\Crawler;
 
+use Eldernet\Crawler\Enums\ResourceType;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RedirectMiddleware;
 use GuzzleHttp\TransferStats;
 use Psr\Http\Message\ResponseInterface;
-use Eldernet\Crawler\Enums\ResourceType;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 
 class CrawlResponse

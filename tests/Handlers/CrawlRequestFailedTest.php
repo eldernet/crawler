@@ -1,12 +1,12 @@
 <?php
 
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
 use Eldernet\Crawler\Crawler;
 use Eldernet\Crawler\CrawlQueues\ArrayCrawlQueue;
 use Eldernet\Crawler\CrawlUrl;
 use Eldernet\Crawler\Handlers\CrawlRequestFailed;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 
 it('preserves the original request from ConnectException', function () {
     $capturedExceptions = [];

@@ -1,11 +1,11 @@
 <?php
 
+use Eldernet\Crawler\Crawler;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
-use Eldernet\Crawler\Crawler;
 
 beforeEach(function () {
     $this->mockHandler = new MockHandler([

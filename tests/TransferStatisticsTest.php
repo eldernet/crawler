@@ -1,9 +1,9 @@
 <?php
 
+use Eldernet\Crawler\TransferStatistics;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\TransferStats;
-use Eldernet\Crawler\TransferStatistics;
 
 function createTransferStats(array $handlerStats = []): TransferStats
 {

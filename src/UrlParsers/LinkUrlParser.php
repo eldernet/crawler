@@ -2,11 +2,11 @@
 
 namespace Eldernet\Crawler\UrlParsers;
 
+use Eldernet\Crawler\Enums\ResourceType;
+use Eldernet\Crawler\ExtractedUrl;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
 use InvalidArgumentException;
-use Eldernet\Crawler\Enums\ResourceType;
-use Eldernet\Crawler\ExtractedUrl;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
 use Symfony\Component\DomCrawler\Link;
 
