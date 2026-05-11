@@ -2,18 +2,17 @@
 
 namespace Eldernet\Crawler\CrawlQueues;
 
-use Psr\Http\Message\UriInterface;
 use Eldernet\Crawler\CrawlUrl;
 
 interface CrawlQueue
 {
     public function add(CrawlUrl $url): self;
 
-    public function has(CrawlUrl|UriInterface $crawlUrl): bool;
+    public function has(string $url): bool;
 
     public function hasPendingUrls(): bool;
 
-    public function getUrlById($id): CrawlUrl;
+    public function getUrlById(mixed $id): CrawlUrl;
 
     public function getPendingUrl(): ?CrawlUrl;
 
@@ -22,4 +21,8 @@ interface CrawlQueue
     public function markAsProcessed(CrawlUrl $crawlUrl): void;
 
     public function getProcessedUrlCount(): int;
+
+    public function getUrlCount(): int;
+
+    public function getPendingUrlCount(): int;
 }

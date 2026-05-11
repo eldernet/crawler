@@ -2,88 +2,41 @@
 
 namespace Eldernet\Crawler\UrlParsers;
 
-use Illuminate\Support\Collection;
-use InvalidArgumentException;
-use Psr\Http\Message\UriInterface;
-use Eldernet\Crawler\Crawler;
-use Eldernet\Crawler\CrawlUrl;
-use Eldernet\Crawler\Url;
+use Eldernet\Crawler\Enums\ResourceType;
+use Eldernet\Crawler\ExtractedUrl;
 use Symfony\Component\DomCrawler\Crawler as DomCrawler;
-use Tree\Node\Node;
 
 class SitemapUrlParser implements UrlParser
 {
-    protected Crawler $crawler;
-
-    public function __construct(Crawler $crawler)
+    /** @return array<int, ExtractedUrl> */
+    public function extractUrls(string $html, string $baseUrl): array
     {
-        $this->crawler = $crawler;
-    }
+        $domCrawler = new DomCrawler($html, $baseUrl);
 
-    public function addFromHtml(string $html, UriInterface $foundOnUrl, ?UriInterface $originalUrl = null): void
-    {
-        $allLinks = $this->extractLinksFromHtml($html, $foundOnUrl);
+        $urls = [];
+        $seen = [];
 
-        collect($allLinks)
-            ->filter(fn (Url $url) => $this->hasCrawlableScheme($url))
-            ->map(fn (Url $url) => $this->normalizeUrl($url))
-            ->filter(function (Url $url) use ($foundOnUrl, $originalUrl) {
-                if (! $node = $this->crawler->addToDepthTree($url, $foundOnUrl, null, $originalUrl)) {
-                    return false;
-                }
+        $domCrawler->filterXPath('//loc')->each(function (DomCrawler $node) use (&$urls, &$seen) {
+            $url = trim($node->text());
 
-                return $this->shouldCrawl($node);
-            })
-            ->filter(fn (Url $url) => ! str_contains($url->getPath(), '/tel:'))
-            ->each(function (Url $url) use ($foundOnUrl) {
-                $crawlUrl = CrawlUrl::create($url, $foundOnUrl, linkText: $url->linkText());
+            if (! $url) {
+                return;
+            }
 
-                $this->crawler->addToCrawlQueue($crawlUrl);
-            });
-    }
+            $parsed = parse_url($url);
 
-    protected function extractLinksFromHtml(string $html, UriInterface $foundOnUrl): ?Collection
-    {
-        $domCrawler = new DomCrawler($html, $foundOnUrl);
+            if (! isset($parsed['scheme']) || ! in_array($parsed['scheme'], ['http', 'https'])) {
+                return;
+            }
 
-        return collect($domCrawler->filterXPath('//loc')
-            ->each(function (DomCrawler $node) {
-                try {
-                    $linkText = $node->text();
+            if (isset($seen[$url])) {
+                return;
+            }
 
-                    if ($linkText) {
-                        $linkText = substr($linkText, 0, 4000);
-                    }
+            $seen[$url] = true;
+            $urls[] = new ExtractedUrl(url: $url, resourceType: ResourceType::Link);
+        });
 
-                    return new Url($linkText, $linkText);
-                } catch (InvalidArgumentException $exception) {
-                    return null;
-                }
-            }));
-    }
-
-    protected function hasCrawlableScheme(UriInterface $uri): bool
-    {
-        return in_array($uri->getScheme(), ['http', 'https']);
-    }
-
-    protected function normalizeUrl(UriInterface $url): UriInterface
-    {
-        return $url->withFragment('');
-    }
-
-    protected function shouldCrawl(Node $node): bool
-    {
-        if ($this->crawler->mustRespectRobots() && ! $this->crawler->getRobotsTxt()->allows($node->getValue(), $this->crawler->getUserAgent())) {
-            return false;
-        }
-
-        $maximumDepth = $this->crawler->getMaximumDepth();
-
-        if (is_null($maximumDepth)) {
-            return true;
-        }
-
-        return $node->getDepth() <= $maximumDepth;
+        return $urls;
     }
 }

@@ -1,84 +1,240 @@
 # Changelog
 
-All notable changes to `spatie/crawler` will be documented in this file.
+All notable changes to `eldernet/crawler` will be documented in this file.
+
+## 9.3.0 - 2026-04-15
+
+### What's Changed
+
+* Add a shouldStopCallback hook for graceful external stops by @kissifrot in https://github.com/eldernet/crawler/pull/504
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/9.2.1...9.3.0
+
+## 9.2.1 - 2026-03-20
+
+### What's Changed
+
+* Close response body streams after processing by @freekmurze in https://github.com/eldernet/crawler/pull/503
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/9.0.1...9.2.1
+
+## 9.2.0 - 2026-03-19
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/9.1.0...9.2.0
+
+## 9.0.1 - 2026-03-02
+
+### Fixed
+
+- Fixed `allow_redirects` default: changed from `false` to `['track_redirects' => true]` so redirects are followed and the redirect history header is populated correctly
+- Non-parseable responses (e.g. binary files filtered by `allowedMimeTypes`) now notify observers via `crawled()` with an empty body instead of being silently skipped
+- URLs containing control characters are now detected and reported as malformed
+- Dot segments (`/../`, `/./`) in extracted URLs are now normalized per RFC 3986
+- Custom client options passed to `Crawler::create()` now merge with defaults instead of replacing them (pass `null` to remove a default)
+- `CrawlRequestFailed` now wraps non-`RequestException` errors so observers always receive a `RequestException`
+- Removed unused classes: `Url`, `ResponseWithCachedBody`, `InvalidUrl`
+
+### Added
+
+- `stream()` method to opt-in to streaming HTTP responses for reduced memory usage
+- `matchWww()` method to treat `www.example.com` and `example.com` as equivalent when using `internalOnly()`
+- `includeSubdomains()` now works as a flag on `internalOnly()` and composes with `matchWww()`
+- `CrawlResponse::redirectHistory()` and `CrawlResponse::wasRedirected()` for inspecting redirect chains
+- `CrawlObserver::crawlFailed()` now receives a `?TransferStatistics` parameter for detecting timeouts
+- `addObserver()` now accepts variadic arguments: `addObserver($obs1, $obs2)`
+- `CrawlRequestFailed` now preserves the original request from `ConnectException` (retaining custom headers like `X-Started-At`)
+
+## 9.0.0 - 2026-03-01
+
+Major rewrite. See [UPGRADING.md](UPGRADING.md) for a full list of breaking changes.
+
+### Changed
+
+- Replace `UriInterface` with plain `string` URLs throughout the API
+- Replace `ResponseInterface` with `CrawlResponse` in observer callbacks
+- `CrawlProfile` is now an interface instead of an abstract class
+- `CrawlObserverCollection` no longer implements `ArrayAccess` or `Iterator`
+- Default scheme changed from `http` to `https`
+- JavaScript rendering is now driver-based (Browsershot moved to `suggest`)
+- `UrlParser` interface redesigned to return `ExtractedUrl[]` instead of adding to queue directly
+- `CrawlQueue::has()` now accepts `string` instead of `CrawlUrl|UriInterface`
+- `start()` now returns a `FinishReason` enum
+- URL is now required in `Crawler::create()`
+
+### Added
+
+- `CrawlResponse` object with `status()`, `body()`, `dom()`, `header()`, `transferStats()`, and more
+- `CrawlProgress` tracking with `urlsCrawled`, `urlsFailed`, `urlsFound`, `urlsPending`
+- `FinishReason` enum: `Completed`, `CrawlLimitReached`, `TimeLimitReached`, `Interrupted`
+- Closure callbacks: `onCrawled()`, `onFailed()`, `onFinished()`, `onWillCrawl()`
+- `foundUrls()` to collect all URLs as `CrawledUrl` objects
+- `fake()` for testing without HTTP requests
+- Scope helpers: `internalOnly()`, `includeSubdomains()`, `shouldCrawl()`
+- Shorter method names: `depth()`, `concurrency()`, `delay()`, `limit()`, `userAgent()`
+- Throttling: `FixedDelayThrottle` and `AdaptiveThrottle`
+- Resource type extraction: `alsoExtract()`, `extractAll()`, `ResourceType` enum
+- URL normalization in `ArrayCrawlQueue`
+- Graceful shutdown via SIGINT/SIGTERM
+- `alwaysCrawl()` and `neverCrawl()` pattern overrides
+- `retry()` for automatic retries on connection errors and 5xx responses
+- `TransferStatistics` with typed timing accessors
+- `CloudflareRenderer` for JavaScript rendering
+- `JavaScriptRenderer` interface for custom renderers
+- Request configuration: `basicAuth()`, `token()`, `withoutVerifying()`, `proxy()`, `cookies()`, `queryParameters()`, `middleware()`
+
+### Removed
+
+- `CrawlUrl::create()` static factory (use `new CrawlUrl(...)` instead)
+- `Eldernet\Crawler\Url` class
+- `ResponseWithCachedBody` (replaced by `CrawlResponse`)
+- `nicmart/tree` dependency
+- `spatie/browsershot` as a required dependency (moved to `suggest`)
+- `setBrowsershot()` and `getBrowsershot()` methods
+- `startCrawling()` method (use `start()`)
+- `setUrlParserClass()` (use `parseSitemaps()` or pass a `UrlParser` directly)
+
+## 8.5.0 - 2026-02-21
+
+Add Laravel 13 support
+
+## 8.4.7 - 2025-11-26
+
+### What's Changed
+
+* Update nicmart/tree dependency version to ^0.10 by @robinmiau in https://github.com/eldernet/crawler/pull/497
+
+### New Contributors
+
+* @robinmiau made their first contribution in https://github.com/eldernet/crawler/pull/497
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.4.6...8.4.7
+
+## 8.4.5 - 2025-10-28
+
+### What's Changed
+
+* When fetching robots.txt, use the same User-Agent as defined by the user by @mattiasgeniar in https://github.com/eldernet/crawler/pull/491
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.4.4...8.4.5
+
+## 8.4.4 - 2025-10-22
+
+### What's Changed
+
+* Update issue template by @AlexVanderbist in https://github.com/eldernet/crawler/pull/488
+* fix(CrawlUrl): Use before initialization is now impossible by @Voltra in https://github.com/eldernet/crawler/pull/490
+
+### New Contributors
+
+* @Voltra made their first contribution in https://github.com/eldernet/crawler/pull/490
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.4.3...8.4.4
+
+## 8.4.3 - 2025-05-20
+
+### What's Changed
+
+* Do not try robots.txt when ignored by @kissifrot in https://github.com/eldernet/crawler/pull/485
+
+### New Contributors
+
+* @kissifrot made their first contribution in https://github.com/eldernet/crawler/pull/485
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.4.2...8.4.3
+
+## 8.4.2 - 2025-02-24
+
+### What's Changed
+
+* set spatie/browsershot minimal version to 5.0.5 by @grafst in https://github.com/eldernet/crawler/pull/484
+
+### New Contributors
+
+* @grafst made their first contribution in https://github.com/eldernet/crawler/pull/484
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.4.1...8.4.2
+
+## 8.4.1 - 2025-02-17
+
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.4.0...8.4.1
 
 ## 8.4.0 - 2024-12-16
 
 ### What's Changed
 
-* Add execution time limit by @VincentLanglet in https://github.com/spatie/crawler/pull/480
+* Add execution time limit by @VincentLanglet in https://github.com/eldernet/crawler/pull/480
 
 ### New Contributors
 
-* @VincentLanglet made their first contribution in https://github.com/spatie/crawler/pull/480
+* @VincentLanglet made their first contribution in https://github.com/eldernet/crawler/pull/480
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.3.1...8.4.0
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.3.1...8.4.0
 
 ## 8.3.1 - 2024-12-09
 
 ### What's Changed
 
-* Upgrade spatie/browsershot to 5.0 by @hasansoyalan in https://github.com/spatie/crawler/pull/478
+* Upgrade spatie/browsershot to 5.0 by @hasansoyalan in https://github.com/eldernet/crawler/pull/478
 
 ### New Contributors
 
-* @hasansoyalan made their first contribution in https://github.com/spatie/crawler/pull/478
+* @hasansoyalan made their first contribution in https://github.com/eldernet/crawler/pull/478
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.3.0...8.3.1
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.3.0...8.3.1
 
 ## 8.3.0 - 2024-12-02
 
 ### What's Changed
 
-* Add support for PHP 8.4 by @pascalbaljet in https://github.com/spatie/crawler/pull/477
+* Add support for PHP 8.4 by @pascalbaljet in https://github.com/eldernet/crawler/pull/477
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.2.3...8.3.0
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.2.3...8.3.0
 
 ## 8.2.3 - 2024-07-31
 
 ### What's Changed
 
-* Fix setParsableMimeTypes() by @superpenguin612 in https://github.com/spatie/crawler/pull/470
+* Fix setParsableMimeTypes() by @superpenguin612 in https://github.com/eldernet/crawler/pull/470
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.2.2...8.2.3
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.2.2...8.2.3
 
 ## 8.2.1 - 2024-07-16
 
 ### What's Changed
 
-* Check original URL against depth tree when visited link is a redirect by @superpenguin612 in https://github.com/spatie/crawler/pull/467
+* Check original URL against depth tree when visited link is a redirect by @superpenguin612 in https://github.com/eldernet/crawler/pull/467
 
 ### New Contributors
 
-* @superpenguin612 made their first contribution in https://github.com/spatie/crawler/pull/467
+* @superpenguin612 made their first contribution in https://github.com/eldernet/crawler/pull/467
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.2.0...8.2.1
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.2.0...8.2.1
 
 ## 8.2.0 - 2024-02-15
 
 ### What's Changed
 
-* Fix wording in documentation by @adamtomat in https://github.com/spatie/crawler/pull/460
-* Add Laravel/Illuminate 11 Support by @Jubeki in https://github.com/spatie/crawler/pull/461
+* Fix wording in documentation by @adamtomat in https://github.com/eldernet/crawler/pull/460
+* Add Laravel/Illuminate 11 Support by @Jubeki in https://github.com/eldernet/crawler/pull/461
 
 ### New Contributors
 
-* @adamtomat made their first contribution in https://github.com/spatie/crawler/pull/460
-* @Jubeki made their first contribution in https://github.com/spatie/crawler/pull/461
+* @adamtomat made their first contribution in https://github.com/eldernet/crawler/pull/460
+* @Jubeki made their first contribution in https://github.com/eldernet/crawler/pull/461
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.1.0...8.2.0
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.1.0...8.2.0
 
 ## 8.1.0 - 2024-01-02
 
 ### What's Changed
 
-* feat: custom link parser by @Velka-DEV in https://github.com/spatie/crawler/pull/458
+* feat: custom link parser by @Velka-DEV in https://github.com/eldernet/crawler/pull/458
 
 ### New Contributors
 
-* @Velka-DEV made their first contribution in https://github.com/spatie/crawler/pull/458
+* @Velka-DEV made their first contribution in https://github.com/eldernet/crawler/pull/458
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.0.4...8.1.0
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.0.4...8.1.0
 
 ## 8.0.4 - 2023-12-29
 
@@ -88,37 +244,37 @@ All notable changes to `spatie/crawler` will be documented in this file.
 
 ### What's Changed
 
-- Fix return type by @riesjart in https://github.com/spatie/crawler/pull/452
+- Fix return type by @riesjart in https://github.com/eldernet/crawler/pull/452
 
 ### New Contributors
 
-- @riesjart made their first contribution in https://github.com/spatie/crawler/pull/452
+- @riesjart made their first contribution in https://github.com/eldernet/crawler/pull/452
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.0.2...8.0.3
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.0.2...8.0.3
 
 ## 8.0.2 - 2023-11-20
 
 ### What's Changed
 
-- Define only needed methods in observer implementation by @buismaarten in https://github.com/spatie/crawler/pull/449
+- Define only needed methods in observer implementation by @buismaarten in https://github.com/eldernet/crawler/pull/449
 
 ### New Contributors
 
-- @buismaarten made their first contribution in https://github.com/spatie/crawler/pull/449
+- @buismaarten made their first contribution in https://github.com/eldernet/crawler/pull/449
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.0.1...8.0.2
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.0.1...8.0.2
 
 ## 8.0.1 - 2023-07-19
 
 ### What's Changed
 
-- Check if rel attribute contains nofollow by @robbinbenard in https://github.com/spatie/crawler/pull/445
+- Check if rel attribute contains nofollow by @robbinbenard in https://github.com/eldernet/crawler/pull/445
 
 ### New Contributors
 
-- @robbinbenard made their first contribution in https://github.com/spatie/crawler/pull/445
+- @robbinbenard made their first contribution in https://github.com/eldernet/crawler/pull/445
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/8.0.0...8.0.1
+**Full Changelog**: https://github.com/eldernet/crawler/compare/8.0.0...8.0.1
 
 ## 8.0.0 - 2023-06-04
 
@@ -133,26 +289,26 @@ All notable changes to `spatie/crawler` will be documented in this file.
 
 ### What's Changed
 
-- Feat/convert phpunit tests to pest by @mansoorkhan96 in https://github.com/spatie/crawler/pull/401
-- Add the ability to change the default baseUrl scheme by @arnissolle in https://github.com/spatie/crawler/pull/402
+- Feat/convert phpunit tests to pest by @mansoorkhan96 in https://github.com/eldernet/crawler/pull/401
+- Add the ability to change the default baseUrl scheme by @arnissolle in https://github.com/eldernet/crawler/pull/402
 
 ### New Contributors
 
-- @arnissolle made their first contribution in https://github.com/spatie/crawler/pull/402
+- @arnissolle made their first contribution in https://github.com/eldernet/crawler/pull/402
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/7.1.1...7.1.2
+**Full Changelog**: https://github.com/eldernet/crawler/compare/7.1.1...7.1.2
 
 ## 7.1.1 - 2022-03-20
 
 ## What's Changed
 
-- Fix issue #395 by @BrokenSourceCode in https://github.com/spatie/crawler/pull/396
+- Fix issue #395 by @BrokenSourceCode in https://github.com/eldernet/crawler/pull/396
 
 ## New Contributors
 
-- @BrokenSourceCode made their first contribution in https://github.com/spatie/crawler/pull/396
+- @BrokenSourceCode made their first contribution in https://github.com/eldernet/crawler/pull/396
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/7.1.0...7.1.1
+**Full Changelog**: https://github.com/eldernet/crawler/compare/7.1.0...7.1.1
 
 ## 7.1.0 - 2022-01-14
 
@@ -162,13 +318,13 @@ All notable changes to `spatie/crawler` will be documented in this file.
 
 ## What's Changed
 
-- Keep only guzzlehttp/psr7 v2.0 by @flangofas in https://github.com/spatie/crawler/pull/392
+- Keep only guzzlehttp/psr7 v2.0 by @flangofas in https://github.com/eldernet/crawler/pull/392
 
 ## New Contributors
 
-- @flangofas made their first contribution in https://github.com/spatie/crawler/pull/392
+- @flangofas made their first contribution in https://github.com/eldernet/crawler/pull/392
 
-**Full Changelog**: https://github.com/spatie/crawler/compare/7.0.4...7.0.5
+**Full Changelog**: https://github.com/eldernet/crawler/compare/7.0.4...7.0.5
 
 ## 7.0.2 - 2021-09-14
 
